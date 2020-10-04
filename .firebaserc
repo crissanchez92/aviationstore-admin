@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "aviationstore-dev"
+  },
+  "targets": {
+    "aviationstore-dev": {
+      "hosting": {
+        "admin": [
+          "aviationstore-admin"
+        ]
+      }
+    }
+  }
+}
