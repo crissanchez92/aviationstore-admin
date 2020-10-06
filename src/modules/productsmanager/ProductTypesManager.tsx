@@ -26,8 +26,9 @@ export const ProductTypesManager: React.FC<IProductTypesManagerProps> = (props) 
 
     return (
         <>
-            {/* <ProductTypesTable productTypes={productTypes}/> */}
-            <AddProductType goToModule={props.goToModule}/>
+            <AddProductType goToModule={props.goToModule} loadProductTypes={loadProductTypes}/>
+            <br/>
+            <ProductTypesTable productTypes={productTypes}/>
         </>
     );
 }

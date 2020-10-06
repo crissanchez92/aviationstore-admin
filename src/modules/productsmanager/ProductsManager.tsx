@@ -1,15 +1,15 @@
 import React, {  } from 'react';
 import { IRedirectProps } from '../../models/redirect/IRedirectProps';
-import { AddProductType } from './AddProductType';
+import { AddProduct } from './AddProduct';
 
 interface IProductsManagerProps extends IRedirectProps{
-
+    
 }
 
 export const ProductsManager: React.FC<IProductsManagerProps> = (props) => {
     return (
         <>
-            <AddProductType goToModule={props.goToModule}/>
+            <AddProduct goToModule={props.goToModule}/>
         </>
     );
 }

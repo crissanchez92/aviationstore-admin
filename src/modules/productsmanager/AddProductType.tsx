@@ -7,7 +7,7 @@ import { ProductsService } from '../../services';
 import { ProductTypesTable } from './';
 
 interface IAddProductTypeProps extends IRedirectProps{
-    
+    loadProductTypes: () => void
 }
 
 export const AddProductType: React.FC<IAddProductTypeProps> = (props) => {
@@ -16,21 +16,6 @@ export const AddProductType: React.FC<IAddProductTypeProps> = (props) => {
     
     const [name, setName] = useState<string>('');
     const [details, setDetails] = useState<string>('');
-
-    function loadProductTypes(){
-        ProductsService.getProductTypes()
-        .then((theProductTypes: ProductType[]) => {
-            setProductTypes(theProductTypes);
-        })
-        .catch(err => {
-            alert('Ocurrió un error');
-            console.log(err);
-        })
-    }
-
-    useEffect(() => {
-        loadProductTypes();
-    },[]);
 
     function handleNameChange(event: any){
         setName(event.target.value);
@@ -57,7 +42,7 @@ export const AddProductType: React.FC<IAddProductTypeProps> = (props) => {
             ProductsService.addProductType(thisproducttype)
             .then(() => {
                 resetModel();
-                loadProductTypes();
+                props.loadProductTypes();
             })
             .catch(err => {
                 alert('Ocurrió un error');
@@ -92,8 +77,6 @@ export const AddProductType: React.FC<IAddProductTypeProps> = (props) => {
                     Publicar
                 </Button>
             </Form>
-            <br/>
-            <ProductTypesTable productTypes={productTypes}/>
         </>
     );
 }
