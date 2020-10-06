@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Button } from "react-bootstrap";
 import { Product } from '../../models/Product';
+import { ProductType } from '../../models/ProductType';
+import { IRedirectProps } from '../../models/redirect/IRedirectProps';
+import { ModuleSelection } from '../../models/redirect/ModuleSelection';
 import { ProductsService } from "../../services";
 
-interface IAddProductProps{
+interface IAddProductProps extends IRedirectProps {
 
 }
 
@@ -11,9 +14,16 @@ export const AddProduct: React.FC<IAddProductProps> = (props) => {
 
     const [name, setName] = useState<string>('');
     const [type, setType] = useState<string>('');
-    const [price, setPrice] = useState<number|undefined>();
+    const [price, setPrice] = useState<number>(0);
     const [details, setDetails] = useState<string>('');
     const [imageSrc, setImageSrc] = useState<string>('');
+
+    const [productTypes, setProductTypes] = useState<ProductType[]>([]);
+
+    useEffect(()=>{
+        ProductsService.getProductTypes()
+        .then(theProductTypes => setProductTypes(theProductTypes))
+    }, []);
 
     function handleNameChange(event: any){
         setName(event.target.value);
@@ -34,7 +44,7 @@ export const AddProduct: React.FC<IAddProductProps> = (props) => {
     function resetModel(){
         setName('');
         setType('');
-        setPrice(undefined);
+        setPrice(0);
         setDetails('');
         setImageSrc('');
     }
@@ -58,7 +68,6 @@ export const AddProduct: React.FC<IAddProductProps> = (props) => {
             ProductsService.addProduct(thisproduct)
             .then(() => {
                 resetModel();
-                alert('Producto publicado');
             })
             .catch(err => {
                 alert('Ocurrió un error');
@@ -72,6 +81,8 @@ export const AddProduct: React.FC<IAddProductProps> = (props) => {
     
     return(
         <Form>
+            <h2>Agregar nuevo producto</h2>
+            <hr/>
             <Form.Group controlId="form.Name">
                 <Form.Label>Nombre</Form.Label>
                 <Form.Control type="text" placeholder="" value={name} onChange={handleNameChange}/>
@@ -79,7 +90,14 @@ export const AddProduct: React.FC<IAddProductProps> = (props) => {
             
             <Form.Group controlId="form.Type">
                 <Form.Label>Categoría</Form.Label>
-                <Form.Control type="text" placeholder="" value={type} onChange={handleTypeChange} />
+                <Form.Control as="select" value={type} onChange={handleTypeChange}>
+                    <option key={-1}></option>
+                    {productTypes.map((productType, index) => {
+                        return(
+                        <option key={index}>{productType.name}</option>
+                        );
+                    })}
+                </Form.Control>
             </Form.Group>
 
             <Form.Group controlId="form.Price">
@@ -102,6 +120,10 @@ export const AddProduct: React.FC<IAddProductProps> = (props) => {
                 URL de la imagen a mostrar
                 </Form.Text>
             </Form.Group>
+
+            <Button variant="secondary" onClick={() => {props.goToModule(ModuleSelection.home)}}>
+                Regresar
+            </Button>
 
             <Button variant="primary" onClick={onsubmit}>
                 Publicar
