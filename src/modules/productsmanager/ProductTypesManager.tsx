@@ -14,9 +14,13 @@ export const ProductTypesManager: React.FC<IProductTypesManagerProps> = (props) 
     const [productTypes, setProductTypes] = useState<ProductType[]>([]);
 
     function loadProductTypes(){
-        const productTypes = ProductsService.getProductTypes()
+        ProductsService.getProductTypes()
         .then((theProductTypes: ProductType[]) => {
             setProductTypes(theProductTypes);
+        })
+        .catch(err => {
+            alert('Ocurrió un error');
+            console.error(err);
         })
     }
 

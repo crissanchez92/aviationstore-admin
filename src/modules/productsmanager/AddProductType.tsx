@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { ProductType } from '../../models/ProductType';
 import { IRedirectProps } from '../../models/redirect/IRedirectProps';
 import { ModuleSelection } from '../../models/redirect/ModuleSelection';
 import { ProductsService } from '../../services';
-import { ProductTypesTable } from './';
 
 interface IAddProductTypeProps extends IRedirectProps{
     loadProductTypes: () => void
 }
 
 export const AddProductType: React.FC<IAddProductTypeProps> = (props) => {
-    
-    const [productTypes, setProductTypes] = useState<ProductType[]>([]);
     
     const [name, setName] = useState<string>('');
     const [details, setDetails] = useState<string>('');
@@ -46,7 +43,7 @@ export const AddProductType: React.FC<IAddProductTypeProps> = (props) => {
             })
             .catch(err => {
                 alert('Ocurrió un error');
-                console.log(err);
+                console.error(err);
             });
         }
         else{
