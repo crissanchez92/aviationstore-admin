@@ -16,7 +16,7 @@ export const AddProduct: React.FC<IAddProductProps> = (props) => {
     const [type, setType] = useState<string>('');
     const [price, setPrice] = useState<number>(0);
     const [details, setDetails] = useState<string>('');
-    const [imageSrc, setImageSrc] = useState<string>('');
+    const [image, setImage] = useState<any>();
 
     const [productTypes, setProductTypes] = useState<ProductType[]>([]);
 
@@ -37,42 +37,31 @@ export const AddProduct: React.FC<IAddProductProps> = (props) => {
     function handleDetailsChange(event: any){
         setDetails(event.target.value);
     }
-    function handleImageSrcChange(event: any){
-        setImageSrc(event.target.value);
-    }
-
-    function resetModel(){
-        setName('');
-        setType('');
-        setPrice(0);
-        setDetails('');
-        setImageSrc('');
+    function handleImageChange(event: any){
+        setImage(event.target.files[0]);
     }
 
     function validModel(){
         return (
             [name.trim(), type.trim()].indexOf('') < 0
-            && price && price >= 0
+            && price >= 0
         );
     }
     
     function onsubmit(){
+        debugger;
         if(validModel()){
+            debugger;
             const thisproduct: Product = {
                 name: name,
                 type: type,
                 price: price!,
                 details: details,
-                imageSrc: imageSrc,
+                imageSrc: '',
+                image: image,
             };
-            ProductsService.addProduct(thisproduct)
-            .then(() => {
-                resetModel();
-            })
-            .catch(err => {
-                alert('Ocurrió un error');
-                console.log(err);
-            });
+            ProductsService.addProduct(thisproduct);
+            props.goToModule(ModuleSelection.home);
         }
         else{
             alert('Datos no válidos');
@@ -115,7 +104,8 @@ export const AddProduct: React.FC<IAddProductProps> = (props) => {
 
             <Form.Group controlId="form.ImageSrc">
                 <Form.Label>Imagen</Form.Label>
-                <Form.Control type="text" placeholder="" value={imageSrc} onChange={handleImageSrcChange} />
+                {/* <Form.Control type="text" placeholder="" value={imageSrc} onChange={handleImageSrcChange} /> */}
+                <Form.Control type="file" onChange={handleImageChange} />
                 <Form.Text className="text-muted">
                 URL de la imagen a mostrar
                 </Form.Text>
