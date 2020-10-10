@@ -1,17 +1,17 @@
 import React, {  } from 'react';
 import { Button, Table } from 'react-bootstrap';
-import { ProductType } from '../../models/ProductType';
+import { Product } from '../../models/Product';
 import { ProductsService } from '../../services';
 
-interface IProductTypesTableProps{
-    productTypes: ProductType[];
+interface IProductsTableProps{
+    products: Product[];
     reloadData: () => void;
 }
 
-export const ProductTypesTable: React.FC<IProductTypesTableProps> = (props) => {
+export const ProductsTable: React.FC<IProductsTableProps> = (props) => {
 
     function onDeleteAction(event: any){
-        ProductsService.deleteProductType(event.target.id)
+        ProductsService.deleteProduct(event.target.id)
         .then(() => {
             props.reloadData()
         })
@@ -31,14 +31,14 @@ export const ProductTypesTable: React.FC<IProductTypesTableProps> = (props) => {
                 </tr>
             </thead>
             <tbody>
-                {props.productTypes.map((productType, index) => {
+                {props.products.map((product, index) => {
                     return(
                         <tr key={index}>
-                            <td>{productType.name}</td>
-                            <td>{productType.details}</td>
+                            <td>{product.name}</td>
+                            <td>{product.details}</td>
                             <td>
                                 <Button onClick={() => alert('Acción en Progreso')}>Editar</Button>
-                                <Button id={productType.id} onClick={onDeleteAction}>Eliminar</Button>
+                                <Button id={product.id} onClick={onDeleteAction}>Eliminar</Button>
                             </td>
                         </tr>
                     );

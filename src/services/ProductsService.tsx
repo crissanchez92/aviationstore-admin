@@ -42,8 +42,8 @@ export class ProductsService {
 
     }
 
-    static deleteProduct(thisProduct: Product) {
-
+    static deleteProduct(thisProductId: string): Promise<void> {
+        return db.collection('products').doc(thisProductId).delete();
     }
 
     static async getProduct(identifier: number) {
@@ -51,18 +51,29 @@ export class ProductsService {
     }
 
     static async getProducts(): Promise<Product[]> {
-        const snapshot = db.collection('products').get();
-        const docs = (await snapshot).docs.map(doc => doc.data()) as Product[];
-        return docs;
+        return await this.getDocumentsWithId('products') as Product[];
     }
 
     static async addProductType(newProductType: ProductType) {
-        return db.collection('productTypes').add(newProductType);
+        const {id, ...productTypeToAdd} = {...newProductType}
+        return db.collection('productTypes').add(productTypeToAdd);
     }
 
-    static async getProductTypes() {
-        const snapshot = db.collection('productTypes').get();
-        const docs = (await snapshot).docs.map(doc => doc.data()) as ProductType[];
-        return docs;
+    static deleteProductType(thisProductTypeId: string): Promise<void> {
+        return db.collection('productTypes').doc(thisProductTypeId).delete();
+    }
+
+    static async getProductTypes(): Promise<ProductType[]> {
+        return await this.getDocumentsWithId('productTypes') as ProductType[];
+    }
+
+    // Get docs along their id since there is no other way to get properties together
+    private static async getDocumentsWithId(name: string): Promise<any[]>{
+        return (await db.collection(name).get())
+        .docs.map(doc => {
+            const id = doc.id;
+            const data = doc.data();
+            return Object.assign({id}, {...data})
+        })
     }
 }

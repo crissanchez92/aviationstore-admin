@@ -32,7 +32,7 @@ export const ProductTypesManager: React.FC<IProductTypesManagerProps> = (props) 
         <>
             <AddProductType goToModule={props.goToModule} loadProductTypes={loadProductTypes}/>
             <br/>
-            <ProductTypesTable productTypes={productTypes}/>
+            <ProductTypesTable productTypes={productTypes} reloadData={loadProductTypes}/>
         </>
     );
 }

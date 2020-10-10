@@ -33,6 +33,7 @@ export const AddProductType: React.FC<IAddProductTypeProps> = (props) => {
     function onsubmit(){
         if(validModel()){
             const thisproducttype: ProductType = {
+                id: undefined,
                 name: name,
                 details: details,
             };

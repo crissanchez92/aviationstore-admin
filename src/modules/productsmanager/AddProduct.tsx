@@ -53,6 +53,7 @@ export const AddProduct: React.FC<IAddProductProps> = (props) => {
         if(validModel()){
             debugger;
             const thisproduct: Product = {
+                id: undefined,
                 name: name,
                 type: type,
                 price: price!,
